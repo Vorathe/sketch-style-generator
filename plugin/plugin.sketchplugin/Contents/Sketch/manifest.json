@@ -1,0 +1,24 @@
+{
+  "compatibleVersion": 3,
+  "bundleVersion": 1,
+  "commands": [
+    {
+      "name": "Copy SCSS Colors",
+      "identifier": "copy-colors",
+      "script": "test.cocoascript",
+      "handlers": {
+        "run": "onRun"
+      }
+    }
+  ],
+  "menu": {
+    "items": [
+      "copy-colors"
+    ],
+    "title": "Copy SCSS Colors"
+  },
+  "version": "0.1.0",
+  "name": "my-plugin",
+  "disableCocoaScriptPreprocessor": true,
+  "appcast": "https://raw.githubusercontent.com//master/.appcast.xml"
+}
