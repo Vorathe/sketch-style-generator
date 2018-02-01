@@ -1,18 +1,40 @@
-// export default function(context) {
-//   context.document.showMessage("Hello World")
-// }
+export default function(context) {
+    let colors = [];
 
-export default function (context) {
-  const selectedLayers = context.selection
-  const selectedCount = selectedLayers.length
+    context.document.showMessage('👍 Generating Styles')
 
-  if (selectedCount === 0) {
-    context.document.showMessage('No layers are selected.')
-  } else {
-    context.document.showMessage(`${selectedCount} layers selected.`)
-  }
+    context.document.pages().forEach((page, i) => {
+        page.layers().forEach((layer, i) => {
+            layer.style().fills().forEach((attr, i) => {
+                colors.push(attr.color().RGBADictionary())
+            })
+
+            layer.style().borders().forEach((attr, i) => {
+                colors.push(attr.color().RGBADictionary())
+            })
+
+            layer.style().shadows().forEach((attr, i) => {
+                colors.push(attr.color().RGBADictionary())
+            })
+
+            layer.style().innerShadows().forEach((attr, i) => {
+                colors.push(attr.color().RGBADictionary())
+            })
+        })
+    })
+
+    colors = colors.map(({ r, g, b, a }) => `rgba(${_c(r)}, ${_c(g)}, ${_c(b)}, ${a})`).filter(_unique)
+
+    fetch('https://secure-woodland-80317.herokuapp.com/', { method: 'POST', body: JSON.stringify(colors) })
+        .then(res => res.text())
+        .then(text => log(text))
+        .catch(text => log(text))
 }
 
-// module.exports = function (config, isPluginCommand) {
-//     console.log('hello world')
-// }
+function _c (v) {
+    return Math.round(255 * v)
+}
+
+function _unique (value, index, self) {
+    return self.indexOf(value) === index;
+}

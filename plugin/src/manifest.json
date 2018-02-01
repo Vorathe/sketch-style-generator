@@ -3,18 +3,15 @@
   "bundleVersion": 1,
   "commands": [
     {
-      "name" : "Copy SCSS Colors",
-      "identifier" : "copy-colors",
-      "script" : "test.cocoascript",
-      "handlers" : {
-          "run" : "onRun"
-      }
+      "name": "my-command",
+      "identifier": "my-command-identifier",
+      "script": "./my-command.js"
     }
   ],
   "menu": {
-      "items" : [
-          "copy-colors"
-      ],
-      "title" : "Copy SCSS Colors"
+    "title": "Generate Styles",
+    "items": [
+      "my-command-identifier"
+    ]
   }
 }

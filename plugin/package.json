@@ -1,11 +1,11 @@
 {
-  "name": "my-plugin",
+  "name": "generate",
   "version": "0.1.0",
   "engines": {
     "sketch": ">=3.0"
   },
   "skpm": {
-    "name": "my-plugin",
+    "name": "Generate",
     "manifest": "src/manifest.json",
     "main": "plugin.sketchplugin"
   },
@@ -17,5 +17,8 @@
   },
   "devDependencies": {
     "@skpm/builder": "^0.3.0"
+  },
+  "dependencies": {
+    "sketch-module-fetch-polyfill": "^0.1.4"
   }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "sketch-style-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "commit-repo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vorathe/sketch-style-generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vorathe/sketch-style-generator/issues"
+  },
+  "homepage": "https://github.com/Vorathe/sketch-style-generator#readme",
+  "dependencies": {
+    "node-fetch": "^1.7.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.11"
+  }
+}
