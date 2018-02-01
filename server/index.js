@@ -1,20 +1,10 @@
 const fetch = require('node-fetch')
 
-// const user = 'vorathe'
-// const repo = 'sketch-style-generator'
-// const accessToken = '936490c4929b3d22634c991b714f978483decf23'
-// const branch = 'master'
 const PORT = process.env.PORT || 3000
 const USER = process.env.USER || ''
 const REPO = process.env.REPO || ''
 const BRANCH = process.env.BRANCH || ''
 const ACCESSTOKEN = process.env.ACCESSTOKEN || ''
-
-console.log(PORT)
-console.log(USER)
-console.log(REPO)
-console.log(BRANCH)
-console.log(ACCESSTOKEN)
 
 const express = require('express')
 const app = express()

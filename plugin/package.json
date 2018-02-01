@@ -17,8 +17,5 @@
   },
   "devDependencies": {
     "@skpm/builder": "^0.3.0"
-  },
-  "dependencies": {
-    "sketch-module-fetch-polyfill": "^0.1.4"
   }
 }

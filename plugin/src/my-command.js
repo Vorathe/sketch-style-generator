@@ -25,7 +25,7 @@ export default function(context) {
 
     colors = colors.map(({ r, g, b, a }) => `rgba(${_c(r)}, ${_c(g)}, ${_c(b)}, ${a})`).filter(_unique)
 
-    fetch('https://secure-woodland-80317.herokuapp.com/', { method: 'POST', body: JSON.stringify(colors) })
+    fetch('', { method: 'POST', body: JSON.stringify(colors) })
         .then(res => res.text())
         .then(text => log(text))
         .catch(text => log(text))
