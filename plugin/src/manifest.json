@@ -3,15 +3,21 @@
   "bundleVersion": 1,
   "commands": [
     {
-      "name": "my-command",
-      "identifier": "my-command-identifier",
-      "script": "./my-command.js"
-    }
+      "name": "Styles",
+      "identifier": "generate-styles-identifier",
+      "script": "./generate-styles.js"
+  },
+  {
+    "name": "Configure",
+    "identifier": "configure-identifier",
+    "script": "./configure.js"
+  }
   ],
   "menu": {
-    "title": "Generate Styles",
+    "title": "Generate",
     "items": [
-      "my-command-identifier"
+      "generate-styles-identifier",
+      "configure-identifier"
     ]
   }
 }

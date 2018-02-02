@@ -1,15 +1,15 @@
 const fetch = require('node-fetch')
 
 const PORT = process.env.PORT || 3000
-const USER = process.env.USER || ''
-const REPO = process.env.REPO || ''
+const REPOURL = (process.env.REPOURL + '/git') || ''
 const BRANCH = process.env.BRANCH || ''
 const ACCESSTOKEN = process.env.ACCESSTOKEN || ''
+const SECRETKEY = process.env.SECRETKEY || ''
 
 const express = require('express')
 const app = express()
 
-app.get('/', (req, res) => { res.send('hello world') })
+app.get('/', (req, res) => { res.send('') })
 app.post('/', processColors)
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
 
@@ -70,15 +70,15 @@ function _checkinSass (content, callback) {
 }
 
 function getLatestSha() {
-    return fetch(`https://api.github.com/repos/${USER}/${REPO}/git/refs/heads/${BRANCH}?access_token=${ACCESSTOKEN}`).then(res => res.json()).then(data => data.object.sha)
+    return fetch(`${REPOURL}/refs/heads/${BRANCH}?access_token=${ACCESSTOKEN}`).then(res => res.json()).then(data => data.object.sha)
 }
 
 function getBaseTreeSha(latestSha) {
-    return fetch(`https://api.github.com/repos/${USER}/${REPO}/git/commits/${latestSha}?access_token=${ACCESSTOKEN}`).then(res => res.json()).then(data => data.tree.sha)
+    return fetch(`${REPOURL}/commits/${latestSha}?access_token=${ACCESSTOKEN}`).then(res => res.json()).then(data => data.tree.sha)
 }
 
 function postFilesToTree(baseTreeSha, content) {
-    return fetch(`https://api.github.com/repos/${USER}/${REPO}/git/trees?access_token=${ACCESSTOKEN}`, {
+    return fetch(`${REPOURL}/trees?access_token=${ACCESSTOKEN}`, {
         method: 'POST',
         body: JSON.stringify({
             base_tree: baseTreeSha,
@@ -93,7 +93,7 @@ function postFilesToTree(baseTreeSha, content) {
 }
 
 function postNewTree(fileTreeSha, latestSha) {
-    return fetch(`https://api.github.com/repos/${USER}/${REPO}/git/commits?access_token=${ACCESSTOKEN}`, {
+    return fetch(`${REPOURL}/commits?access_token=${ACCESSTOKEN}`, {
         method: 'POST',
         body: JSON.stringify({
             parent: [ latestSha ],
@@ -104,7 +104,7 @@ function postNewTree(fileTreeSha, latestSha) {
 }
 
 function postNewCommit(newCommitSha) {
-    return fetch(`https://api.github.com/repos/${USER}/${REPO}/git/refs/heads/${BRANCH}?access_token=${ACCESSTOKEN}`, {
+    return fetch(`${REPOURL}/refs/heads/${BRANCH}?access_token=${ACCESSTOKEN}`, {
         method: 'POST',
         body: JSON.stringify({
             sha: newCommitSha,

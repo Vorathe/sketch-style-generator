@@ -1,3 +1,5 @@
+import userDefaults from './user-defaults.js'
+
 export default function(context) {
     let colors = [];
 
@@ -25,10 +27,18 @@ export default function(context) {
 
     colors = colors.map(({ r, g, b, a }) => `rgba(${_c(r)}, ${_c(g)}, ${_c(b)}, ${a})`).filter(_unique)
 
-    fetch('', { method: 'POST', body: JSON.stringify(colors) })
+    fetch(userDefaults.getPreference('repourl'), { method: 'POST', body: JSON.stringify(colors) })
         .then(res => res.text())
-        .then(text => log(text))
-        .catch(text => log(text))
+        .then(text => {
+            log(text)
+
+            context.document.showMessage('👍 Finished. Styles should be in Github now!')
+        })
+        .catch(text => {
+            log(text)
+
+            context.document.showMessage('🛑 Minor issue. Try again.')
+        })
 }
 
 function _c (v) {
