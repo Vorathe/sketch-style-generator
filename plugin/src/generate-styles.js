@@ -1,7 +1,8 @@
 import userDefaults from './user-defaults.js'
 
 export default function(context) {
-    let colors = [];
+    let secretKey = getSecretKey()
+    let colors = []
 
     context.document.showMessage('👍 Generating Styles')
 
@@ -27,7 +28,7 @@ export default function(context) {
 
     colors = colors.map(({ r, g, b, a }) => `rgba(${_c(r)}, ${_c(g)}, ${_c(b)}, ${a})`).filter(_unique)
 
-    fetch(userDefaults.getPreference('repourl'), { method: 'POST', body: JSON.stringify(colors) })
+    fetch(userDefaults.getPreference('repourl'), { method: 'POST', headers: { 'X-SECRETKEY': secretKey }, body: JSON.stringify(colors) })
         .then(res => res.text())
         .then(text => {
             log(text)
@@ -47,4 +48,15 @@ function _c (v) {
 
 function _unique (value, index, self) {
     return self.indexOf(value) === index;
+}
+
+function getSecretKey () {
+    var alert = COSAlertWindow.new()
+    alert.setMessageText('Enter secret key so we know it\'s you.')
+    alert.addTextLabelWithValue('Secret Key')
+    alert.addTextFieldWithValue('')
+    alert.addButtonWithTitle('Go')
+    alert.runModal()
+
+    return alert.viewAtIndex(1).stringValue()
 }
