@@ -82,9 +82,7 @@ function checkinSass (content, callback) {
 }
 
 function getLatestSha() {
-    return fetch(`${REPOURL}/refs/heads/${BRANCH}?access_token=${ACCESSTOKEN}`)
-        .then(res => res.json())
-        .then(data => data.object.sha)
+    return fetch(`${REPOURL}/refs/heads/${BRANCH}?access_token=${ACCESSTOKEN}`).then(res => res.json()).then(data => data.object.sha)
 }
 
 function getBaseTreeSha(latestSha) {
