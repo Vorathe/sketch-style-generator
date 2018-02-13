@@ -1,17 +1,29 @@
 const fetch = require('node-fetch')
 
 const PORT = process.env.PORT || 3000
-const REPOURL = (process.env.REPOURL + '/git') || ''
-const BRANCH = process.env.BRANCH || ''
-const ACCESSTOKEN = process.env.ACCESSTOKEN || ''
-const SECRETKEY = process.env.SECRETKEY || ''
+const USER = process.env.USER
+const REPO = process.env.REPO
+const BRANCH = process.env.BRANCH
+const ACCESSTOKEN = process.env.ACCESSTOKEN
+const SECRETKEY = process.env.SECRETKEY
+const REPOURL = `https://api.github.com/repos/${USER}/${REPO}/git`
 
 const express = require('express')
 const app = express()
 
-app.get('/', (req, res) => { res.send('') })
-app.post('/', processColors)
-app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
+app.get('/', (req, res) => res.send('up and running'))
+app.post('/', secretKeyCheck, processColors)
+app.listen(PORT, () => console.log(`Listening on port ${PORT}!`))
+
+function secretKeyCheck (req, res, next) {
+    if (req.get('X-SECRETKEY') != SECRETKEY) {
+        res.status(401).send('You shall not pass')
+
+        return
+    }
+
+    next()
+}
 
 function processColors (req, res) {
     let body = [];
@@ -19,18 +31,18 @@ function processColors (req, res) {
     req.on('data', (chunk) => {
         body.push(chunk);
     }).on('end', () => {
-        body = Buffer.concat(body).toString();
+        body = Buffer.concat(body).toString()
 
-        let colors = _formatColors(body)
-        let sass = _createSass(colors)
+        let colors = formatColors(body)
+        let sass = createSass(colors)
 
-        _checkinSass(sass, (data) => {
+        checkinSass(sass, (data) => {
             res.send(data)
         })
     });
 }
 
-function _formatColors (body) {
+function formatColors (body) {
     let json = JSON.parse(body)
     let colors = {}
 
@@ -41,7 +53,7 @@ function _formatColors (body) {
     return colors
 }
 
-function _createSass (obj) {
+function createSass (obj) {
     let sass = ''
 
     Object.keys(obj).forEach(k => {
@@ -51,7 +63,7 @@ function _createSass (obj) {
     return sass
 }
 
-function _checkinSass (content, callback) {
+function checkinSass (content, callback) {
     let latestSha = ''
 
     getLatestSha()
@@ -70,7 +82,9 @@ function _checkinSass (content, callback) {
 }
 
 function getLatestSha() {
-    return fetch(`${REPOURL}/refs/heads/${BRANCH}?access_token=${ACCESSTOKEN}`).then(res => res.json()).then(data => data.object.sha)
+    return fetch(`${REPOURL}/refs/heads/${BRANCH}?access_token=${ACCESSTOKEN}`)
+        .then(res => res.json())
+        .then(data => data.object.sha)
 }
 
 function getBaseTreeSha(latestSha) {
